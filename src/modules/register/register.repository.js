@@ -14,9 +14,15 @@ export const salvarUsuario = async (novoUsuario) => {
 
     }
 
-    const data = await fs.readFile('./usuarios.json', 'utf-8')
-    const usuarios = JSON.parse(data)
+    let usuarios = []
+    try {
+        const data = await fs.readFile('./usuarios.json', 'utf-8')
+        if (data) usuarios = JSON.parse(data)
+    } catch (erro) {
+        // arquivo não existe ainda, será criado
+    }
+    
     usuarios.push(newuser)
 
-    await fs.writeFile('./usuarios.json', JSON.stringify(usuarios))
+    await fs.writeFile('./usuarios.json', JSON.stringify(usuarios, null, 2))
 }
